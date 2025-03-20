@@ -94,11 +94,11 @@ public class Reaction_type extends JFrame {
 
 
     private void showStartMenu() {
-        String[] options = {"Random Words", "Java Syntax"};
+        String[] options = {"Random Words", "Java Keywords"};
         int choice = JOptionPane.showOptionDialog(
                 this,
                 "Choose a game mode:",
-                "Typing Game Mode Selection",
+                "Mode Selection",
                 JOptionPane.DEFAULT_OPTION,
                 JOptionPane.QUESTION_MESSAGE,
                 null,
@@ -180,6 +180,9 @@ public class Reaction_type extends JFrame {
         updateLabels();
         if (lives <= 0) {
             endGame();
+
+
+
         }
     }
 
