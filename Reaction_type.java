@@ -11,20 +11,20 @@ import java.awt.image.BufferedImage;
 
 public class Reaction_type extends JFrame {
 
-    private final BufferedImage backgroundImage;
-    private final JTextField inputField;
-    private final JLabel timerLabel;
-    private final JLabel scoreLabel;
-    private final JLabel livesLabel;
-    private final List<FallingWord> fallingWords = new ArrayList<>();
-    private final Random random = new Random();
+    final BufferedImage backgroundImage;
+    final JTextField inputField;
+    final JLabel timerLabel;
+    final JLabel scoreLabel;
+    final JLabel livesLabel;
+    final List<FallingWord> fallingWords = new ArrayList<>();
+    final Random random = new Random();
 
-    private int correctWords = 0;
-    private int lives = 3;
-    private long startTime;
-    private Timer gameTimer, wordTimer;
-    private boolean isPaused = false;
-    private boolean isJavaMode = false;
+    int correctWords = 0;
+    int lives = 3;
+    long startTime;
+    Timer gameTimer, wordTimer;
+    boolean isPaused = false;
+    boolean gameMode = false;
 
     public Reaction_type() throws IOException {
         setTitle("Reaction Type");
@@ -106,9 +106,9 @@ public class Reaction_type extends JFrame {
                 options[0]);
 
         if (choice == 1) {
-            isJavaMode = true;
+            gameMode = true;
         } else {
-            isJavaMode = false;
+            gameMode = false;
         }
         startGame();
     }
@@ -155,7 +155,7 @@ public class Reaction_type extends JFrame {
 
         wordTimer = new Timer(2000, e -> {
             if (fallingWords.size() < 10) {
-                String wordText = isJavaMode ? Words.getRandomJavaWord() : Words.getRandomWord();
+                String wordText = gameMode ? Words.getRandomJavaWord() : Words.getRandomWord();
                 int x = random.nextInt(getWidth() - 100);
                 fallingWords.add(new FallingWord(wordText, x, 0));
             }
@@ -180,9 +180,6 @@ public class Reaction_type extends JFrame {
         updateLabels();
         if (lives <= 0) {
             endGame();
-
-
-
         }
     }
 
@@ -199,31 +196,31 @@ public class Reaction_type extends JFrame {
     }
 
     private class FallingWord {
-        private final String text;
-        private final int x;
-        private int y;
+        final String text;
+        final int x;
+        int y;
 
-        public FallingWord(String text, int x, int y) {
+        private FallingWord(String text, int x, int y) {
             this.text = text;
             this.x = x;
             this.y = y;
         }
 
-        public void update() {
+        private void update() {
             y += 2;
         }
 
-        public void draw(Graphics g) {
+        private void draw(Graphics g) {
             g.setFont(new Font("Arial", Font.BOLD, 20));
             g.setColor(Color.BLACK);
             g.drawString(text, x, y);
         }
 
-        public String getText() {
+        String getText() {
             return text;
         }
 
-        public int getY() {
+        int getY() {
             return y;
         }
     }
