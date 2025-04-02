@@ -198,22 +198,32 @@ public class Reaction_type extends JFrame {
     private class FallingWord {
         final String text;
         final int x;
-        int y;
+        double y;
 
         private FallingWord(String text, int x, int y) {
             this.text = text;
             this.x = x;
             this.y = y;
         }
-
         private void update() {
             y += 2;
+            if(correctWords>20){
+                y += 0.8;
+            } else if (correctWords>15) {
+                y += 0.5;
+            }
+            else if (correctWords>10) {
+                y += 0.5;
+            }
+            else if (correctWords>5) {
+                y += 0.5;
+            }
         }
 
         private void draw(Graphics g) {
             g.setFont(new Font("Arial", Font.BOLD, 20));
             g.setColor(Color.BLACK);
-            g.drawString(text, x, y);
+            g.drawString(text, x,(int) y);
         }
 
         String getText() {
@@ -221,7 +231,7 @@ public class Reaction_type extends JFrame {
         }
 
         int getY() {
-            return y;
+            return (int) y;
         }
     }
 
