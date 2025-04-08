@@ -1,47 +1,53 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.io.File;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 
 public class Reaction_type extends JFrame {
 
-    private static final String MENU_CARD = "MENU";
-    private static final String NAME_INPUT_CARD = "NAME_INPUT";
-    private static final String MODE_SELECT_CARD = "MODE_SELECT";
-    private static final String GAME_CARD = "GAME";
-    private static final String GAMEOVER_CARD = "GAMEOVER";
+    static final String MENU_CARD = "MENU";
+    static final String NAME_INPUT_CARD = "NAME_INPUT";
+    static final String MODE_SELECT_CARD = "MODE_SELECT";
+    static final String GAME_CARD = "GAME";
+    static final String GAMEOVER_CARD = "GAMEOVER";
 
-    private CardLayout cardLayout;
-    private JPanel cardPanel;
+    final CardLayout cardLayout;
+    final JPanel cardPanel;
 
+    final BufferedImage backgroundImage;
+    JTextField inputField;
+    JLabel timerLabel;
+    JLabel scoreLabel;
+    JLabel livesLabel;
+    JLabel playerNameLabel;
+    final List<FallingWord> fallingWords = new ArrayList<>();
+    final Random random = new Random();
 
-    private BufferedImage backgroundImage;
-    private JTextField inputField;
-    private JLabel timerLabel;
-    private JLabel scoreLabel;
-    private JLabel livesLabel;
-    private JLabel playerNameLabel;
-    private List<FallingWord> fallingWords = new ArrayList<>();
-    private Random random = new Random();
-
-    private int correctWords = 0;
-    private int lives = 3;
-    private long startTime;
-    private Timer gameTimer, wordTimer;
-    private boolean isPaused = false;
-    private boolean gameMode = false;
-    private String playerName = "Player";
+    int score = 0;
+    int highScore = 0;
+    int lives = 3;
+    long startTime;
+    Timer gameTimer, wordTimer;
+    boolean isPaused = false;
+    boolean gameMode = false;
+    String playerName = "Player";
+    final int buttonWidth = 180;
+    final int buttonHeight = 60;
+    final int buttonX = 88;
 
     public Reaction_type() throws IOException {
         setTitle("Reaction Type");
+        ImageIcon icon = new ImageIcon("shrek.png");
+        setIconImage(icon.getImage());
         setSize(360, 640);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+        setResizable(false);
 
 
         cardLayout = new CardLayout();
@@ -65,20 +71,27 @@ public class Reaction_type extends JFrame {
     }
 
     private JPanel createMenuCard() {
-        JPanel menuPanel = new JPanel(new BorderLayout());
+        Background menuPanel = new Background();
+        menuPanel.setLayout(new BorderLayout());
         menuPanel.setOpaque(false);
 
         JPanel centerPanel = new JPanel(new GridLayout(3, 1, 0, 20));
         centerPanel.setOpaque(false);
+        centerPanel.setLayout(null);
 
         JLabel titleLabel = new JLabel("Reaction Type", SwingConstants.CENTER);
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 32));
+        titleLabel.setFont(new Font("Times New Roman", Font.BOLD, 32));
+        titleLabel.setBounds(0,100,360,50);
 
         JButton startButton = new JButton("Start Game");
-        startButton.addActionListener(e -> showNameInput());
+        startButton.setFocusable(false);
+        startButton.addActionListener(_ -> showNameInput());
+        startButton.setBounds(buttonX,280,buttonWidth,buttonHeight);
 
         JButton exitButton = new JButton("Exit");
-        exitButton.addActionListener(e -> System.exit(0));
+        exitButton.setFocusable(false);
+        exitButton.addActionListener(_ -> System.exit(0));
+        exitButton.setBounds(buttonX,350,buttonWidth,buttonHeight);
 
         centerPanel.add(titleLabel);
         centerPanel.add(startButton);
@@ -90,21 +103,26 @@ public class Reaction_type extends JFrame {
     }
 
     private JPanel createNameInputCard() {
-        JPanel namePanel = new JPanel(new BorderLayout());
+
+        Background namePanel = new Background();
+        namePanel.setLayout(new BorderLayout());
         namePanel.setOpaque(false);
 
         JPanel centerPanel = new JPanel(new GridLayout(4, 1, 0, 10));
         centerPanel.setOpaque(false);
+        centerPanel.setLayout(null);
 
         JLabel titleLabel = new JLabel("Enter Your Name", SwingConstants.CENTER);
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
-
-        JTextField nameField = new JTextField(15);
-        nameField.setFont(new Font("Arial", Font.PLAIN, 18));
+        titleLabel.setFont(new Font("Times New Roman", Font.BOLD, 24));
+        JTextField nameField = new JTextField();
+        nameField.setFont(new Font("Times New Roman", Font.PLAIN, 18));
+        nameField.setBounds(88,170,180,60);
         nameField.setHorizontalAlignment(JTextField.CENTER);
 
         JButton continueButton = new JButton("Continue");
-        continueButton.addActionListener(e -> {
+        continueButton.setFocusable(false);
+        continueButton.setBounds(buttonX,280,buttonWidth,buttonHeight);
+        continueButton.addActionListener(_ -> {
             String name = nameField.getText().trim();
             if (!name.isEmpty()) {
                 playerName = name;
@@ -115,7 +133,9 @@ public class Reaction_type extends JFrame {
         });
 
         JButton backButton = new JButton("Back to Menu");
-        backButton.addActionListener(e -> showMenu());
+        backButton.setFocusable(false);
+        backButton.setBounds(buttonX,350,buttonWidth,buttonHeight);
+        backButton.addActionListener(_ -> showMenu());
 
         centerPanel.add(titleLabel);
         centerPanel.add(nameField);
@@ -128,29 +148,38 @@ public class Reaction_type extends JFrame {
     }
 
     private JPanel createModeSelectCard() {
-        JPanel modePanel = new JPanel(new BorderLayout());
+        Background modePanel = new Background();
+        modePanel.setLayout(new BorderLayout());
         modePanel.setOpaque(false);
 
         JPanel centerPanel = new JPanel(new GridLayout(4, 1, 0, 10));
         centerPanel.setOpaque(false);
+        centerPanel.setLayout(null);
 
         JLabel titleLabel = new JLabel("Select Game Mode", SwingConstants.CENTER);
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
+        titleLabel.setFont(new Font("Times New Roman", Font.BOLD, 24));
+        titleLabel.setBounds(0,100,360,50);
 
         JButton randomWordsButton = new JButton("Random Words");
-        randomWordsButton.addActionListener(e -> {
+        randomWordsButton.setFocusable(false);
+        randomWordsButton.setBounds(buttonX,280, buttonWidth,buttonHeight);
+        randomWordsButton.addActionListener(_ -> {
             gameMode = false;
             showGame();
         });
 
         JButton javaWordsButton = new JButton("Java Keywords");
-        javaWordsButton.addActionListener(e -> {
+        javaWordsButton.setFocusable(false);
+        javaWordsButton.setBounds(buttonX,350,buttonWidth,buttonHeight);
+        javaWordsButton.addActionListener(_ -> {
             gameMode = true;
             showGame();
         });
 
         JButton backButton = new JButton("Back");
-        backButton.addActionListener(e -> showNameInput());
+        backButton.setFocusable(false);
+        backButton.setBounds(buttonX,420,buttonWidth,buttonHeight);
+        backButton.addActionListener(_ -> showNameInput());
 
         centerPanel.add(titleLabel);
         centerPanel.add(randomWordsButton);
@@ -174,8 +203,8 @@ public class Reaction_type extends JFrame {
                 if (isPaused) {
                     g.setColor(new Color(255, 255, 255, 150));
                     g.fillRect(0, 0, getWidth(), getHeight());
-                    g.setFont(new Font("Arial", Font.BOLD, 50));
-                    g.setColor(Color.RED);
+                    g.setFont(new Font("Times New Roman", Font.BOLD, 50));
+                    g.setColor(Color.BLACK);
                     g.drawString("PAUSED", getWidth() / 2 - 100, getHeight() / 2);
                 }
             }
@@ -217,30 +246,60 @@ public class Reaction_type extends JFrame {
 
         return gamePanel;
     }
+    private void updateHighScore(){
+
+        if(score > highScore){
+            highScore = score;
+        }
+    }
 
     private JPanel createGameOverCard() {
-        JPanel gameOverPanel = new JPanel(new BorderLayout());
+
+        Background gameOverPanel = new Background();
+        gameOverPanel.setLayout(new BorderLayout());
         gameOverPanel.setOpaque(false);
 
         JPanel centerPanel = new JPanel(new GridLayout(4, 1, 0, 10));
         centerPanel.setOpaque(false);
+        centerPanel.setLayout(null);
 
         JLabel gameOverLabel = new JLabel("Game Over", SwingConstants.CENTER);
-        gameOverLabel.setFont(new Font("Arial", Font.BOLD, 32));
+        gameOverLabel.setFont(new Font("Times New Roman", Font.BOLD, 32));
+        gameOverLabel.setBounds(0, 100, 360, 100);
+
+//        JLabel highScoreLabel = new JLabel("Highest Score: "+ highScore, SwingConstants.CENTER );
+//        highScoreLabel.setFont(new Font("Times New Roman", Font.BOLD,20));
+//        highScoreLabel.setBounds(0, 200, 360, 30);
+
 
         JLabel playerLabel = new JLabel("Player: " + playerName, SwingConstants.CENTER);
-        playerLabel.setFont(new Font("Arial", Font.PLAIN, 20));
+        playerLabel.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+        playerLabel.setBounds(0, 170, 360, 30);
 
-        JLabel scoreLabel = new JLabel("Score: " + correctWords, SwingConstants.CENTER);
-        scoreLabel.setFont(new Font("Arial", Font.PLAIN, 24));
+        JLabel scoreLabel = new JLabel("Score: " + score, SwingConstants.CENTER);
+        scoreLabel.setFont(new Font("Times New Roman", Font.PLAIN, 24));
+        scoreLabel.setBounds(0, 230, 360, 35);
 
         JButton restartButton = new JButton("Play Again");
-        restartButton.addActionListener(e -> showNameInput());
+        restartButton.setFocusable(false);
+        restartButton.setBounds(buttonX,280,buttonWidth,buttonHeight);
+        restartButton.addActionListener(_ -> showNameInput());
+        inputField.setText(" ");
+
+        JButton exitButton = new JButton("Quit");
+        exitButton.setFocusable(false);
+        exitButton.setBounds(buttonX,350,buttonWidth,buttonHeight);
+        exitButton.addActionListener(_ -> System.exit(0));
+
+
 
         centerPanel.add(gameOverLabel);
         centerPanel.add(playerLabel);
         centerPanel.add(scoreLabel);
         centerPanel.add(restartButton);
+        centerPanel.add(exitButton);
+        //centerPanel.add(highScoreLabel);
+        updateHighScore();
 
         gameOverPanel.add(centerPanel, BorderLayout.CENTER);
 
@@ -270,11 +329,14 @@ public class Reaction_type extends JFrame {
         JLabel playerLabel = (JLabel) ((JPanel) gameOverPanel.getComponent(0)).getComponent(1);
         JLabel scoreLabel = (JLabel) ((JPanel) gameOverPanel.getComponent(0)).getComponent(2);
 
+
         playerLabel.setText("Player: " + playerName);
-        scoreLabel.setText("Score: " + correctWords);
+        scoreLabel.setText("Score: " + score);
+
 
         cardLayout.show(cardPanel, GAMEOVER_CARD);
     }
+
 
     private void togglePause() {
         isPaused = !isPaused;
@@ -289,7 +351,7 @@ public class Reaction_type extends JFrame {
     }
 
     private void startGame() {
-        correctWords = 0;
+        score = 0;
         lives = 3;
         startTime = System.currentTimeMillis();
         fallingWords.clear();
@@ -297,7 +359,7 @@ public class Reaction_type extends JFrame {
 
         inputField.requestFocusInWindow();
 
-        gameTimer = new Timer(16, e -> {
+        gameTimer = new Timer(16, _ -> {
             if (!isPaused) {
                 List<FallingWord> wordsToRemove = new ArrayList<>();
                 for (FallingWord word : fallingWords) {
@@ -314,7 +376,7 @@ public class Reaction_type extends JFrame {
         });
         gameTimer.start();
 
-        wordTimer = new Timer(2000, e -> {
+        wordTimer = new Timer(2500, _ -> {
             if (fallingWords.size() < 10) {
                 String wordText = gameMode ? Words.getRandomJavaWord() : Words.getRandomWord();
                 int x = random.nextInt(getWidth() - 100);
@@ -329,7 +391,7 @@ public class Reaction_type extends JFrame {
         boolean wordFound = fallingWords.removeIf(word -> word.getText().equals(userInput));
 
         if (wordFound) {
-            correctWords++;
+            score++;
         }
 
         inputField.setText("");
@@ -345,7 +407,7 @@ public class Reaction_type extends JFrame {
     }
 
     private void updateLabels() {
-        scoreLabel.setText("Score: " + correctWords);
+        scoreLabel.setText("Score: " + score);
         livesLabel.setText("Lives: " + lives);
     }
 
@@ -368,16 +430,16 @@ public class Reaction_type extends JFrame {
 
         private void update() {
             y += 2;
-            if(correctWords>20){
+            if(score >20){
                 y += 0.8;
-            } else if (correctWords>15) {
-                y += 0.5;
+            } else if (score >15) {
+                y += 0.7;
             }
-            else if (correctWords>10) {
-                y += 0.5;
+            else if (score >10) {
+                y += 0.7;
             }
-            else if (correctWords>5) {
-                y += 0.5;
+            else if (score >5) {
+                y += 0.7;
             }
         }
 
