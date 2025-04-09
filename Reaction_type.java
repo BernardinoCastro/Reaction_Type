@@ -29,20 +29,20 @@ public class Reaction_type extends JFrame {
     final Random random = new Random();
 
     int score = 0;
-    int highScore = 0;
+    //int highScore = 0;
     int lives = 3;
     long startTime;
     Timer gameTimer, wordTimer;
     boolean isPaused = false;
     boolean gameMode = false;
     String playerName = "Player";
-    final int buttonWidth = 180;
+    final int buttonWidth = 170;
     final int buttonHeight = 60;
     final int buttonX = 88;
 
     public Reaction_type() throws IOException {
         setTitle("Reaction Type");
-        ImageIcon icon = new ImageIcon("shrek.png");
+        ImageIcon icon = new ImageIcon("C:\\Users\\Guest-PC\\IdeaProjects\\Reaction_type\\src\\Image\\shrek.png");
         setIconImage(icon.getImage());
         setSize(360, 640);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -75,20 +75,24 @@ public class Reaction_type extends JFrame {
         menuPanel.setLayout(new BorderLayout());
         menuPanel.setOpaque(false);
 
+
         JPanel centerPanel = new JPanel(new GridLayout(3, 1, 0, 20));
         centerPanel.setOpaque(false);
         centerPanel.setLayout(null);
 
-        JLabel titleLabel = new JLabel("Reaction Type", SwingConstants.CENTER);
+        JLabel titleLabel = new JLabel("", SwingConstants.CENTER);
+        titleLabel.setIcon(new ImageIcon("C:\\Users\\Guest-PC\\IdeaProjects\\Reaction_type\\src\\Image\\logo.png"));
         titleLabel.setFont(new Font("Times New Roman", Font.BOLD, 32));
-        titleLabel.setBounds(0,100,360,50);
+        titleLabel.setBounds(16,100,315,71);
 
-        JButton startButton = new JButton("Start Game");
+        JButton startButton = new JButton();
+        startButton.setIcon(new ImageIcon("C:\\Users\\Guest-PC\\IdeaProjects\\Reaction_type\\src\\Image\\Start.png"));
         startButton.setFocusable(false);
         startButton.addActionListener(_ -> showNameInput());
         startButton.setBounds(buttonX,280,buttonWidth,buttonHeight);
 
-        JButton exitButton = new JButton("Exit");
+        JButton exitButton = new JButton();
+        exitButton.setIcon(new ImageIcon("C:\\Users\\Guest-PC\\IdeaProjects\\Reaction_type\\src\\Image\\exit.png"));
         exitButton.setFocusable(false);
         exitButton.addActionListener(_ -> System.exit(0));
         exitButton.setBounds(buttonX,350,buttonWidth,buttonHeight);
@@ -112,14 +116,18 @@ public class Reaction_type extends JFrame {
         centerPanel.setOpaque(false);
         centerPanel.setLayout(null);
 
-        JLabel titleLabel = new JLabel("Enter Your Name", SwingConstants.CENTER);
-        titleLabel.setFont(new Font("Times New Roman", Font.BOLD, 24));
+        JLabel titleLabel = new JLabel("", SwingConstants.CENTER);
+        titleLabel.setIcon(new ImageIcon("C:\\Users\\Guest-PC\\IdeaProjects\\Reaction_type\\src\\Image\\ENTERNAME.png"));
+        titleLabel.setBounds(16,100,315,71);
         JTextField nameField = new JTextField();
-        nameField.setFont(new Font("Times New Roman", Font.PLAIN, 18));
-        nameField.setBounds(88,170,180,60);
+        nameField.setBackground(new Color(113,197,207,255));
+        nameField.setFont(new Font("Times New Roman", Font.BOLD, 18));
+        nameField.setFocusable(true);
+        nameField.setBounds(84,210,180,50);
         nameField.setHorizontalAlignment(JTextField.CENTER);
 
-        JButton continueButton = new JButton("Continue");
+        JButton continueButton = new JButton();
+        continueButton.setIcon(new ImageIcon("C:\\Users\\Guest-PC\\IdeaProjects\\Reaction_type\\src\\Image\\continue.png"));
         continueButton.setFocusable(false);
         continueButton.setBounds(buttonX,280,buttonWidth,buttonHeight);
         continueButton.addActionListener(_ -> {
@@ -132,7 +140,8 @@ public class Reaction_type extends JFrame {
             }
         });
 
-        JButton backButton = new JButton("Back to Menu");
+        JButton backButton = new JButton();
+        backButton.setIcon(new ImageIcon("C:\\Users\\Guest-PC\\IdeaProjects\\Reaction_type\\src\\Image\\back.png"));
         backButton.setFocusable(false);
         backButton.setBounds(buttonX,350,buttonWidth,buttonHeight);
         backButton.addActionListener(_ -> showMenu());
@@ -156,11 +165,12 @@ public class Reaction_type extends JFrame {
         centerPanel.setOpaque(false);
         centerPanel.setLayout(null);
 
-        JLabel titleLabel = new JLabel("Select Game Mode", SwingConstants.CENTER);
-        titleLabel.setFont(new Font("Times New Roman", Font.BOLD, 24));
-        titleLabel.setBounds(0,100,360,50);
+        JLabel titleLabel = new JLabel("", SwingConstants.CENTER);
+        titleLabel.setIcon(new ImageIcon("C:\\Users\\Guest-PC\\IdeaProjects\\Reaction_type\\src\\Image\\GAMEMODE.png"));
+        titleLabel.setBounds(16,100,315,71);
 
-        JButton randomWordsButton = new JButton("Random Words");
+        JButton randomWordsButton = new JButton();
+        randomWordsButton.setIcon(new ImageIcon("C:\\Users\\Guest-PC\\IdeaProjects\\Reaction_type\\src\\Image\\randomWords.png"));
         randomWordsButton.setFocusable(false);
         randomWordsButton.setBounds(buttonX,280, buttonWidth,buttonHeight);
         randomWordsButton.addActionListener(_ -> {
@@ -168,7 +178,8 @@ public class Reaction_type extends JFrame {
             showGame();
         });
 
-        JButton javaWordsButton = new JButton("Java Keywords");
+        JButton javaWordsButton = new JButton();
+        javaWordsButton.setIcon(new ImageIcon("C:\\Users\\Guest-PC\\IdeaProjects\\Reaction_type\\src\\Image\\java keywords.png"));
         javaWordsButton.setFocusable(false);
         javaWordsButton.setBounds(buttonX,350,buttonWidth,buttonHeight);
         javaWordsButton.addActionListener(_ -> {
@@ -176,7 +187,8 @@ public class Reaction_type extends JFrame {
             showGame();
         });
 
-        JButton backButton = new JButton("Back");
+        JButton backButton = new JButton();
+        backButton.setIcon(new ImageIcon("C:\\Users\\Guest-PC\\IdeaProjects\\Reaction_type\\src\\Image\\back.png"));
         backButton.setFocusable(false);
         backButton.setBounds(buttonX,420,buttonWidth,buttonHeight);
         backButton.addActionListener(_ -> showNameInput());
@@ -212,6 +224,7 @@ public class Reaction_type extends JFrame {
 
 
         JPanel topPanel = new JPanel(new GridLayout(1, 4));
+        topPanel.setBackground(new Color(113,197,207,255));
 
         playerNameLabel = new JLabel(playerName, SwingConstants.CENTER);
         playerNameLabel.setFont(new Font("Arial", Font.BOLD, 14));
@@ -246,12 +259,12 @@ public class Reaction_type extends JFrame {
 
         return gamePanel;
     }
-    private void updateHighScore(){
-
-        if(score > highScore){
-            highScore = score;
-        }
-    }
+//    private void updateHighScore(){
+//
+//        if(score > highScore){
+//            highScore = score;
+//        }
+//    }
 
     private JPanel createGameOverCard() {
 
@@ -263,9 +276,10 @@ public class Reaction_type extends JFrame {
         centerPanel.setOpaque(false);
         centerPanel.setLayout(null);
 
-        JLabel gameOverLabel = new JLabel("Game Over", SwingConstants.CENTER);
+        JLabel gameOverLabel = new JLabel("", SwingConstants.CENTER);
+        gameOverLabel.setIcon(new ImageIcon("C:\\Users\\Guest-PC\\IdeaProjects\\Reaction_type\\src\\Image\\GAMEOVER.png"));
         gameOverLabel.setFont(new Font("Times New Roman", Font.BOLD, 32));
-        gameOverLabel.setBounds(0, 100, 360, 100);
+        gameOverLabel.setBounds(16,100,315,71);
 
 //        JLabel highScoreLabel = new JLabel("Highest Score: "+ highScore, SwingConstants.CENTER );
 //        highScoreLabel.setFont(new Font("Times New Roman", Font.BOLD,20));
@@ -280,13 +294,15 @@ public class Reaction_type extends JFrame {
         scoreLabel.setFont(new Font("Times New Roman", Font.PLAIN, 24));
         scoreLabel.setBounds(0, 230, 360, 35);
 
-        JButton restartButton = new JButton("Play Again");
+        JButton restartButton = new JButton();
+        restartButton.setIcon(new ImageIcon("C:\\Users\\Guest-PC\\IdeaProjects\\Reaction_type\\src\\Image\\play again.png"));
         restartButton.setFocusable(false);
         restartButton.setBounds(buttonX,280,buttonWidth,buttonHeight);
         restartButton.addActionListener(_ -> showNameInput());
         inputField.setText(" ");
 
-        JButton exitButton = new JButton("Quit");
+        JButton exitButton = new JButton();
+        exitButton.setIcon(new ImageIcon("C:\\Users\\Guest-PC\\IdeaProjects\\Reaction_type\\src\\Image\\quit.png"));
         exitButton.setFocusable(false);
         exitButton.setBounds(buttonX,350,buttonWidth,buttonHeight);
         exitButton.addActionListener(_ -> System.exit(0));
@@ -299,7 +315,7 @@ public class Reaction_type extends JFrame {
         centerPanel.add(restartButton);
         centerPanel.add(exitButton);
         //centerPanel.add(highScoreLabel);
-        updateHighScore();
+        //updateHighScore();
 
         gameOverPanel.add(centerPanel, BorderLayout.CENTER);
 
@@ -364,7 +380,7 @@ public class Reaction_type extends JFrame {
                 List<FallingWord> wordsToRemove = new ArrayList<>();
                 for (FallingWord word : fallingWords) {
                     word.update();
-                    if (word.getY() > getHeight()) {
+                    if (word.getY() > 545) {
                         wordsToRemove.add(word);
                         loseLife();
                     }
@@ -430,21 +446,21 @@ public class Reaction_type extends JFrame {
 
         private void update() {
             y += 2;
-            if(score >20){
+            if(score >25){
                 y += 0.8;
-            } else if (score >15) {
+            } else if (score >20) {
                 y += 0.7;
             }
-            else if (score >10) {
+            else if (score >15) {
                 y += 0.7;
             }
-            else if (score >5) {
+            else if (score >8) {
                 y += 0.7;
             }
         }
 
         private void draw(Graphics g) {
-            g.setFont(new Font("Arial", Font.BOLD, 20));
+            g.setFont(new Font("Arial", Font.BOLD, 22));
             g.setColor(Color.BLACK);
             g.drawString(text, x,(int) y);
         }
